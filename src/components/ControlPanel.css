@@ -1,0 +1,158 @@
+.control-panel {
+  width: 350px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #f5f5f5;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.panel-section {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.panel-section h2 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #333;
+  border-bottom: 2px solid #3388ff;
+  padding-bottom: 8px;
+}
+
+.status-indicator {
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.status-indicator.ready {
+  background-color: #4caf50;
+  color: white;
+}
+
+.status-indicator.waiting {
+  background-color: #ff9800;
+  color: white;
+}
+
+.travel-type-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.travel-type-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #ddd;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.travel-type-buttons button:hover:not(:disabled) {
+  background: #f0f0f0;
+  border-color: #3388ff;
+}
+
+.travel-type-buttons button.active {
+  background: #3388ff;
+  color: white;
+  border-color: #3388ff;
+}
+
+.travel-type-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.road-types-info {
+  margin-top: 10px;
+  padding: 8px;
+  background: #f9f9f9;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: #3388ff;
+  box-shadow: 0 0 0 2px rgba(51, 136, 255, 0.2);
+}
+
+.primary-button,
+.secondary-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.primary-button {
+  background: #3388ff;
+  color: white;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: #2970e6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(51, 136, 255, 0.3);
+}
+
+.secondary-button {
+  background: #6c757d;
+  color: white;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
