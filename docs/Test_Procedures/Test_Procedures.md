@@ -722,7 +722,3 @@ This document describes the test procedures for validating that all user stories
 - **React Documentation**: https://react.dev
 - **GeoJSON Specification**: https://geojson.org
 
----
-
-**Document End**
-
