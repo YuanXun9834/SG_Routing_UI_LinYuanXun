@@ -1,10 +1,5 @@
 # Software Interface Agreement
 
-## Document Information
-
-- **Document Version**: 1.0
-- **Date**: 2024
-- **Purpose**: Defines the interface between the User Interface (UI) team and the Backend Server team for the SG Routing Application.
 
 ## Overview
 
@@ -526,13 +521,6 @@ Recommended tools for testing the API:
   - http://geojson.io
   - https://geojson.tools
 
-## Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2024 | Initial version |
-
----
 
 **Document End**
 
