@@ -481,34 +481,15 @@ This document describes the test procedures for validating that all user stories
 
 ## Test Summary
 
-### Test Execution Log
+### Test Procedures
 
-| Test ID | Test Procedure | Status | Date | Notes |
-|---------|---------------|--------|------|-------|
-| TP-1 | Server Readiness Check | ⬜ | | |
-| TP-2 | Travel Type Selection | ⬜ | | |
-| TP-3 | Route Calculation | ⬜ | | |
-| TP-4 | View Road Types | ⬜ | | |
-| TP-5 | View Blockages | ⬜ | | |
-| TP-6 | Add Blockage | ⬜ | | |
-| TP-7 | Delete Blockage | ⬜ | | |
-| TP-8 | Map Interaction | ⬜ | | |
-| TP-9 | Error Handling | ⬜ | | |
-| TP-10 | User Interface | ⬜ | | |
-
-### Overall Test Result
-
-- **Total Tests**: 10
-- **Passed**: ___
-- **Failed**: ___
-- **Not Executed**: ___
-
-### Notes
-
-- All tests should be executed in a controlled environment
-- Screenshots and evidence should be collected for each test
-- Any deviations from expected results should be documented
-- Retest any failed tests after fixes are applied
+1. Server Readiness Check (with manual check button)
+2. Travel Type Selection
+3. Route Calculation (with plan mode and clear button)
+4. View Road Types (with clear button)
+5. View Blockages (with minimize feature)
+6. Add Blockage (with map-click location selection)
+7. Delete Blockage
 
 ---
 
