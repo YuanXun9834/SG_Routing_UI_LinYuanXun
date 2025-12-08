@@ -1,11 +1,5 @@
 # Software Design Description
 
-## Document Information
-
-- **Document Version**: 1.0
-- **Date**: 2024
-- **Purpose**: Describe the software design of the SG Routing Application, including architecture, components, and sequence diagrams
-
 ## Overview
 
 The SG Routing Application is a web-based routing application that provides route calculation and visualization for Singapore roads using OpenStreetMap data. The application follows a client-server architecture with a React-based frontend and RESTful API backend.

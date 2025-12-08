@@ -1,11 +1,5 @@
 # Test Procedures
 
-## Document Information
-
-- **Document Version**: 1.0
-- **Date**: 2024
-- **Purpose**: Document the testing procedures for the SG Routing Application
-
 ## Overview
 
 This document describes the test procedures for validating that all user stories and their acceptance criteria are met. Each test procedure corresponds to one or more user stories and includes step-by-step instructions, expected results, and pass/fail criteria.
@@ -49,24 +43,34 @@ This document describes the test procedures for validating that all user stories
    - Wait for the page to load completely
 
 2. **Observe server status**
-   - Locate the "Server Status" section in the control panel
+   - Locate the "⚡ Server Status" section in the control panel
    - Check the status indicator
+   - Verify a "🔄 Check" button is present next to the status
 
 3. **Verify status display**
    - If server is ready: Status should show "✓ Ready" with green background
    - If server is waiting: Status should show "⏳ Waiting..." with orange background
 
-4. **Wait for status update**
+4. **Test manual server check**
+   - Click the "🔄 Check" button
+   - Verify the button shows "🔄 Checking..." while checking
+   - Verify the status updates after the check completes
+   - If server becomes ready, verify road types are automatically reloaded
+
+5. **Wait for automatic status update**
    - Wait 5-10 seconds
    - Observe if the status updates automatically
 
-5. **Check button states**
+6. **Check button states**
    - Verify that routing-related buttons are disabled when status is "Waiting"
    - Verify that buttons are enabled when status is "Ready"
 
 ### Expected Results
 
 - ✅ Server status is displayed in the control panel
+- ✅ Manual check button is available next to status
+- ✅ Manual check button triggers server status check
+- ✅ Road types are reloaded when server becomes ready after manual check
 - ✅ Status updates automatically every 5 seconds
 - ✅ Green indicator with checkmark when ready
 - ✅ Orange indicator when waiting
@@ -186,7 +190,14 @@ This document describes the test procedures for validating that all user stories
    - Verify an error message is displayed
    - Verify the application does not crash
 
-6. **Test with different travel types**
+6. **Test clear route button**
+   - After calculating a route, verify a "✕ Clear Route" button appears at the top-right
+   - Click the clear route button
+   - Verify the route line is removed from the map
+   - Verify start and end markers are removed
+   - Verify the button disappears after clearing
+
+7. **Test with different travel types**
    - Select "Bicycle" travel type
    - Use plan mode to calculate a route
    - Verify the route may differ from the car route
@@ -200,6 +211,8 @@ This document describes the test procedures for validating that all user stories
 - ✅ Plan mode guides users through selecting start and end points
 - ✅ Coordinates are automatically filled when clicking on the map
 - ✅ Route is automatically calculated after selecting both points
+- ✅ Clear route button appears when route is displayed
+- ✅ Clear route button removes route and markers
 - ✅ Input fields are present and functional
 - ✅ Default values are pre-filled
 - ✅ Route is displayed as a blue line on the map
@@ -499,9 +512,18 @@ This document describes the test procedures for validating that all user stories
    - Calculate a route
    - Verify start marker is green
    - Verify end marker is red
+   - Add a blockage
+   - Verify blockage marker is orange (distinct from route markers)
    - Verify markers have popups when clicked
 
-6. **Test responsiveness**
+6. **Test map resizing**
+   - Collapse the control panel
+   - Verify the map automatically resizes to fill the screen
+   - Verify no borders or gaps appear
+   - Expand the control panel
+   - Verify the map resizes again smoothly
+
+7. **Test responsiveness**
    - Resize the browser window
    - Verify the map adjusts to the new size
    - Verify the map remains functional
