@@ -170,75 +170,7 @@ This document contains user stories that describe the functionalities of the SG 
 
 ---
 
-## User Story 8: Interactive Map Display
-
-**As a** user  
-**I want to** interact with an OpenStreetMap-based map  
-**So that** I can visualize routes and geographic data
-
-### Acceptance Criteria
-
-1. The map displays OpenStreetMap tiles for Singapore
-2. The map is centered on Singapore by default (approximately 1.3521°N, 103.8198°E)
-3. The default zoom level is appropriate for viewing Singapore (zoom level 12)
-4. Users can pan the map by dragging
-5. Users can zoom in/out using mouse wheel or zoom controls
-6. The map displays routes, blockages, road types, and markers correctly
-7. Markers have distinct colors: green for start point, red for end point, orange for blockages
-8. The map is responsive and fills the available space
-9. The map automatically resizes when the control panel is collapsed or expanded
-10. Map layers (routes, blockages, road types) can be displayed simultaneously
-11. Clear buttons appear at the top-right when routes or road types are displayed
-12. The map does not allow routing outside of Singapore boundaries
-
----
-
-## User Story 9: Handle Server Errors Gracefully
-
-**As a** user  
-**I want to** receive clear error messages when operations fail  
-**So that** I understand what went wrong and can take appropriate action
-
-### Acceptance Criteria
-
-1. When the server is unreachable, appropriate error messages are displayed
-2. When route calculation fails, a user-friendly error message is shown
-3. When blockage operations fail, specific error messages are displayed
-4. Error messages do not use technical jargon
-5. The application does not crash when errors occur
-6. Users can retry failed operations
-7. Loading states are shown during API calls
-8. Buttons are disabled during loading to prevent duplicate requests
-
----
-
-## User Story 10: Responsive User Interface
-
-**As a** user  
-**I want to** use an intuitive and responsive interface  
-**So that** I can efficiently use all features of the application
-
-### Acceptance Criteria
-
-1. The control panel is clearly organized with sections for different features
-2. The control panel has a modern gradient header with the application title
-3. The control panel can be collapsed to the left, showing only a floating expand button
-4. When collapsed, the map expands to fill the entire screen with no borders or gaps
-5. A floating expand button (▶) appears in the top-left when the panel is collapsed
-6. Input fields have appropriate labels and placeholders
-7. Buttons have clear, descriptive text with modern gradient styling
-8. The UI provides visual feedback for user actions (hover states, active states, smooth animations)
-9. Loading states are indicated with disabled buttons or loading indicators
-10. The layout uses modern card-based design with shadows and rounded corners
-11. Colors use a consistent purple gradient theme (#667eea to #764ba2)
-12. The interface is responsive and works on different screen sizes
-13. The map and control panel are properly sized and do not overlap incorrectly
-14. Smooth transitions and animations enhance the user experience
-15. Custom scrollbars with gradient styling match the theme
-
----
-
-## User Story 11: View Active Road Types
+## User Story 8: View Active Road Types
 
 **As a** user  
 **I want to** see which road types are currently active for routing  
@@ -254,23 +186,7 @@ This document contains user stories that describe the functionalities of the SG 
 
 ---
 
-## User Story 12: Persistent Session State
-
-**As a** user  
-**I want to** have my selections persist during the session  
-**So that** I don't have to reconfigure settings repeatedly
-
-### Acceptance Criteria
-
-1. The selected travel type persists until changed
-2. Start and end point inputs retain their values until manually changed
-3. The map view (zoom, pan) persists during interactions
-4. Blockage list state is maintained
-5. Road type selection persists until changed
-
----
-
-## User Story 13: Plan Mode for Route Selection
+## User Story 9: Plan Mode for Route Selection
 
 **As a** user  
 **I want to** select start and end points by clicking on the map  
@@ -292,7 +208,9 @@ This document contains user stories that describe the functionalities of the SG 
 12. Plan mode can be cancelled by clicking the button again
 13. Visual feedback (hints) guides users through the process
 
-## User Story 14: Clear Route and Road Type Visualizations
+---
+
+## User Story 10: Clear Route and Road Type Visualizations
 
 **As a** user  
 **I want to** clear displayed routes and road types from the map  
@@ -323,13 +241,7 @@ The application provides the following core functionalities:
 8. ✅ Clear road types button to remove highlighted roads
 9. ✅ Blockage management (view, add, delete) with minimize feature
 10. ✅ Map-click location selection for blockages
-11. ✅ Interactive map with OpenStreetMap and auto-resize
-12. ✅ Collapsible control panel for more map space
-13. ✅ Minimizable blockage list
-14. ✅ Distinct marker colors (green start, red end, orange blockages)
-15. ✅ Error handling and user feedback
-16. ✅ Modern, responsive UI with gradient theme
-17. ✅ Smooth animations and transitions
+11. ✅ View active road types for selected travel mode
 
 All user stories are implemented with their respective acceptance criteria met.
 
