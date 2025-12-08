@@ -520,4 +520,3 @@ Recommended tools for testing the API:
   - http://geojson.io
   - https://geojson.tools
 
-
