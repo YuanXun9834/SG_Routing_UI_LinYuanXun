@@ -144,13 +144,26 @@ This document describes the test procedures for validating that all user stories
 
 ### Test Steps
 
-1. **Verify input fields**
-   - Locate the "Route Planning" section
+1. **Test Plan Mode (Recommended Method)**
+   - Locate the "🗺️ Route Planning" section
+   - Click "📍 Enter Plan Mode" button
+   - Verify the button text changes to "📍 Click on map for START point"
+   - Verify a hint message appears: "Click anywhere on the map to set the start point"
+   - Click anywhere on the map
+   - Verify the start point coordinates are automatically filled in the input fields
+   - Verify the button text changes to "📍 Click on map for END point"
+   - Verify the hint message changes: "Click anywhere on the map to set the end point"
+   - Click anywhere on the map again
+   - Verify the end point coordinates are automatically filled in
+   - Verify the route is automatically calculated and displayed
+   - Verify plan mode exits automatically (button returns to "📍 Enter Plan Mode")
+   - Verify the selected coordinates remain in the input fields after route calculation
+
+2. **Test Manual Entry Method**
+   - Locate the input fields for start and end points
    - Verify start point fields: Longitude, Latitude, Description
    - Verify end point fields: Longitude, Latitude, Description
-   - Check that default values are pre-filled
-
-2. **Test with default values**
+   - Check that default values are pre-filled (Bedok 85 and Choa Chu Kang Road)
    - Ensure server status is "Ready"
    - Click "Calculate Route" button
    - Wait for the route to be calculated
@@ -175,7 +188,7 @@ This document describes the test procedures for validating that all user stories
 
 6. **Test with different travel types**
    - Select "Bicycle" travel type
-   - Calculate a route
+   - Use plan mode to calculate a route
    - Verify the route may differ from the car route
    - Select "Walk" travel type
    - Calculate the same route
@@ -183,6 +196,10 @@ This document describes the test procedures for validating that all user stories
 
 ### Expected Results
 
+- ✅ Plan mode button is present and functional
+- ✅ Plan mode guides users through selecting start and end points
+- ✅ Coordinates are automatically filled when clicking on the map
+- ✅ Route is automatically calculated after selecting both points
 - ✅ Input fields are present and functional
 - ✅ Default values are pre-filled
 - ✅ Route is displayed as a blue line on the map
@@ -190,6 +207,7 @@ This document describes the test procedures for validating that all user stories
 - ✅ End point marked with red marker
 - ✅ Map auto-zooms to fit route
 - ✅ Route calculation works with custom coordinates
+- ✅ Selected points persist after route calculation (do not reset to defaults)
 - ✅ Error messages are displayed for invalid inputs
 - ✅ Route differs based on travel type selection
 
@@ -274,20 +292,27 @@ This document describes the test procedures for validating that all user stories
 
 2. **Locate blockage list**
    - Find the blockage list panel in the bottom-right corner of the map
-   - Verify it displays "Blockages" with a count
+   - Verify it displays "🚧 Blockages" with a count in the header
 
-3. **Verify blockage display on map**
+3. **Test minimize feature**
+   - Click the ▼ button in the blockage list header
+   - Verify the list collapses to show only the header (approximately 56px tall)
+   - Verify the button changes to ▲
+   - Click the ▲ button to expand
+   - Verify the full list is displayed again
+
+4. **Verify blockage display on map**
    - Check if any blockages are displayed on the map as red circles/areas
    - Verify the blockages are visible and correctly positioned
 
-4. **Verify blockage list content**
+5. **Verify blockage list content**
    - Check the blockage list panel
    - If blockages exist, verify each shows:
      - Blockage name
      - Description (if available)
-   - If no blockages exist, verify "No blockages found" message
+   - If no blockages exist, verify "No blockages found" message with icon
 
-5. **Test refresh after addition**
+6. **Test refresh after addition**
    - Add a new blockage (see Test Procedure 6)
    - Verify the blockage list updates automatically
    - Verify the new blockage appears on the map
@@ -297,10 +322,13 @@ This document describes the test procedures for validating that all user stories
 - ✅ Blockages are automatically loaded on application start
 - ✅ Blockages are displayed on the map as red circles/areas
 - ✅ Blockage list panel is visible in the bottom-right corner
+- ✅ Blockage list can be minimized and expanded
+- ✅ Minimize button (▼/▲) is functional
 - ✅ Blockage list shows names and descriptions
-- ✅ Blockage count is displayed
+- ✅ Blockage count is displayed in the header
 - ✅ "No blockages found" message appears when no blockages exist
 - ✅ List updates automatically when blockages are added/deleted
+- ✅ Compact design with modern styling
 
 ### Pass/Fail Criteria
 
@@ -387,11 +415,12 @@ This document describes the test procedures for validating that all user stories
 
 1. **Locate blockage list**
    - Ensure at least one blockage exists (add one if needed)
-   - Find the blockage list panel
+   - Find the blockage list panel in the bottom-right corner
 
 2. **Identify delete button**
    - Locate a blockage in the list
    - Verify a delete button (×) is present for each blockage
+   - Verify the delete button has a red gradient background
 
 3. **Test deletion with confirmation**
    - Click the delete button for a blockage
@@ -408,10 +437,12 @@ This document describes the test procedures for validating that all user stories
    - Check that the blockage is removed from the list
    - Check that the blockage is removed from the map
    - Verify the blockage count updates
+   - Verify no error messages appear if deletion succeeds (even with network issues)
 
 6. **Test error handling**
    - Try to delete a blockage that doesn't exist (if possible)
-   - Verify an error message is displayed
+   - Verify appropriate error messages are displayed for real failures
+   - Verify the application handles network errors gracefully
 
 ### Expected Results
 
@@ -569,34 +600,42 @@ This document describes the test procedures for validating that all user stories
    - Test that inputs accept appropriate data types
 
 3. **Test buttons**
-   - Verify buttons have clear, descriptive text
-   - Check hover states (if applicable)
+   - Verify buttons have clear, descriptive text with gradient styling
+   - Check hover states with scale and shadow effects
    - Verify active states for travel type buttons
-   - Check disabled states
+   - Check disabled states with reduced opacity
+   - Verify smooth transitions on all interactions
 
-4. **Test color consistency**
-   - Verify primary actions use blue color
-   - Verify blockages use red color
-   - Verify status indicators use appropriate colors
+4. **Test color consistency and theme**
+   - Verify primary actions use purple gradient theme (#667eea to #764ba2)
+   - Verify blockages use red gradient colors
+   - Verify status indicators use appropriate colors (green for ready, orange for waiting)
+   - Verify consistent gradient usage throughout the UI
 
 5. **Test responsiveness**
    - Resize the browser window
    - Verify the layout adjusts appropriately
    - Verify all features remain accessible
+   - Verify the map resizes correctly when window size changes
 
 6. **Test visual feedback**
    - Interact with buttons and inputs
-   - Verify visual feedback is provided
+   - Verify visual feedback is provided (hover, focus, active states)
+   - Verify smooth animations and transitions
    - Verify the UI is not cluttered
+   - Verify custom scrollbars with gradient styling
 
 ### Expected Results
 
-- ✅ Layout is clean and organized
-- ✅ Input fields have labels and placeholders
-- ✅ Buttons have clear text and visual feedback
-- ✅ Colors are used consistently
+- ✅ Layout is clean and organized with modern card-based design
+- ✅ Control panel can be collapsed and expanded smoothly
+- ✅ Map automatically resizes when panel collapses/expands
+- ✅ Input fields have labels, placeholders, and gradient focus states
+- ✅ Buttons have clear text, gradient styling, and visual feedback
+- ✅ Colors use consistent purple gradient theme
 - ✅ UI is responsive to window resizing
-- ✅ Visual feedback is provided for interactions
+- ✅ Smooth animations and transitions enhance user experience
+- ✅ Custom scrollbars match the theme
 
 ### Pass/Fail Criteria
 

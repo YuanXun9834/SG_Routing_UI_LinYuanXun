@@ -71,6 +71,7 @@ App (Root Component)
 │   └── Start/End Markers
 └── BlockageList
     ├── Blockage Items Display
+    ├── Minimize/Expand Functionality
     └── Delete Functionality
 ```
 
@@ -89,12 +90,15 @@ App (Root Component)
 #### ControlPanel Component
 - **Purpose**: User interface for all controls and inputs
 - **Responsibilities**:
-  - Display server status
-  - Handle travel type selection
-  - Collect route planning inputs
+  - Display server status with visual indicators
+  - Handle travel type selection with automatic road type configuration
+  - Collect route planning inputs (manual entry and plan mode)
+  - Manage plan mode state (idle, selecting_start, selecting_end)
   - Handle road type viewing
   - Handle blockage creation
   - Display active road types
+  - Support collapsible panel functionality
+  - Sync state with App component for map-selected points
 
 #### Map Component
 - **Purpose**: Display and interact with the map
@@ -111,7 +115,9 @@ App (Root Component)
 - **Responsibilities**:
   - Fetch and display all blockages
   - Provide delete functionality
+  - Support minimize/expand functionality
   - Update when blockages change
+  - Display blockage count in header
 
 ### Service Layer
 
@@ -127,10 +133,53 @@ App (Root Component)
 
 ### Route Calculation Flow
 
+**Method 1: Plan Mode (Map Click Selection)**
 ```
-User Input (Start/End Points)
+User clicks "Enter Plan Mode"
+    ↓
+ControlPanel (setPlanMode('selecting_start'))
+    ↓
+User clicks on map for START point
+    ↓
+Map Component (onMapClick)
+    ↓
+App Component (handleMapClick)
+    ↓
+- Updates startPoint state
+- Updates ControlPanel via callback
+- Sets planMode to 'selecting_end'
+    ↓
+User clicks on map for END point
+    ↓
+App Component (handleMapClick)
+    ↓
+- Updates endPoint state
+- Updates ControlPanel via callback
+- Sets planMode to 'idle'
+- Automatically calls handleRouteCalculate
+    ↓
+API Service (routingAPI.getRoute)
+    ↓
+Backend API (POST /route)
+    ↓
+GeoJSON Response
+    ↓
+App Component (setRouteGeoJSON)
+    ↓
+Map Component (MapUpdater)
+    ↓
+Leaflet GeoJSON Layer
+    ↓
+Map Display
+```
+
+**Method 2: Manual Entry**
+```
+User Input (Start/End Points in input fields)
     ↓
 ControlPanel Component
+    ↓
+User clicks "Calculate Route"
     ↓
 App Component (handleRouteCalculate)
     ↓
@@ -198,7 +247,52 @@ sequenceDiagram
     Map-->>User: Route displayed
 ```
 
-### Sequence Diagram 2: Travel Type Selection
+### Sequence Diagram 2: Plan Mode Route Selection
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant ControlPanel
+    participant App
+    participant Map
+    participant APIService
+    participant Backend
+
+    User->>ControlPanel: Click "Enter Plan Mode"
+    ControlPanel->>App: onPlanModeChange('selecting_start')
+    App->>App: setPlanMode('selecting_start')
+    ControlPanel->>ControlPanel: Update button text and hint
+    ControlPanel-->>User: "Click on map for START point"
+    
+    User->>Map: Click on map
+    Map->>App: onMapClick(lat, lng)
+    App->>App: setStartPoint([lat, lng])
+    App->>App: setCurrentStartPoint(point)
+    App->>ControlPanel: updateStartPointFn(point)
+    ControlPanel->>ControlPanel: setStartPoint(point)
+    App->>App: setPlanMode('selecting_end')
+    ControlPanel->>ControlPanel: Update button text
+    ControlPanel-->>User: "Click on map for END point"
+    
+    User->>Map: Click on map
+    Map->>App: onMapClick(lat, lng)
+    App->>App: setEndPoint([lat, lng])
+    App->>App: setCurrentEndPoint(point)
+    App->>ControlPanel: updateEndPointFn(point)
+    ControlPanel->>ControlPanel: setEndPoint(point)
+    App->>App: setPlanMode('idle')
+    App->>App: handleRouteCalculate(startPt, endPt)
+    App->>APIService: routingAPI.getRoute(request)
+    APIService->>Backend: POST /route
+    Backend-->>APIService: GeoJSON (route)
+    APIService-->>App: GeoJSON
+    App->>App: setRouteGeoJSON(route)
+    App->>Map: routeGeoJSON prop
+    Map->>Map: Display route on map
+    ControlPanel-->>User: Route calculated automatically
+```
+
+### Sequence Diagram 3: Travel Type Selection
 
 ```mermaid
 sequenceDiagram
@@ -228,7 +322,7 @@ sequenceDiagram
     ControlPanel-->>User: Travel type updated
 ```
 
-### Sequence Diagram 3: Add Blockage
+### Sequence Diagram 4: Add Blockage
 
 ```mermaid
 sequenceDiagram
@@ -265,7 +359,7 @@ sequenceDiagram
     Map-->>User: New blockage on map
 ```
 
-### Sequence Diagram 4: Server Readiness Check
+### Sequence Diagram 5: Server Readiness Check
 
 ```mermaid
 sequenceDiagram
@@ -286,7 +380,7 @@ sequenceDiagram
     end
 ```
 
-### Sequence Diagram 5: View Road Type
+### Sequence Diagram 6: View Road Type
 
 ```mermaid
 sequenceDiagram
@@ -320,15 +414,33 @@ sequenceDiagram
 
 The application uses React's built-in state management with hooks:
 
-- **Server Status**: `serverReady` (boolean)
-- **Loading State**: `loading` (boolean)
-- **Route Data**: `routeGeoJSON` (GeoJSON | null)
-- **Blockages Data**: `blockagesGeoJSON` (GeoJSON | null)
-- **Road Type Data**: `roadTypeGeoJSON` (GeoJSON | null)
-- **Start Point**: `startPoint` ([number, number] | null)
-- **End Point**: `endPoint` ([number, number] | null)
-- **Travel Type**: `travelType` (TravelType)
-- **Blockage Refresh Trigger**: `blockageRefreshTrigger` (number)
+#### App Component State
+- **Server Status**: `serverReady` (boolean) - Backend server readiness
+- **Loading State**: `loading` (boolean) - Loading state during API calls
+- **Route Data**: `routeGeoJSON` (GeoJSON | null) - Calculated route GeoJSON
+- **Blockages Data**: `blockagesGeoJSON` (GeoJSON | null) - All blockages GeoJSON
+- **Road Type Data**: `roadTypeGeoJSON` (GeoJSON | null) - Currently viewed road type GeoJSON
+- **Start Point (Map)**: `startPoint` ([number, number] | null) - Start point coordinates for map markers
+- **End Point (Map)**: `endPoint` ([number, number] | null) - End point coordinates for map markers
+- **Start Point (Route)**: `startPointForRoute` (Point | null) - Start point for route calculation
+- **Current Start Point**: `currentStartPoint` (Point | null) - Start point selected via plan mode
+- **Current End Point**: `currentEndPoint` (Point | null) - End point selected via plan mode
+- **Plan Mode**: `planMode` ('idle' | 'selecting_start' | 'selecting_end') - Plan mode state
+- **Panel Collapsed**: `isPanelCollapsed` (boolean) - Control panel collapse state
+- **Travel Type**: `travelType` (TravelType) - Currently selected travel type
+- **Blockage Refresh Trigger**: `blockageRefreshTrigger` (number) - Trigger for refreshing blockage list
+
+#### ControlPanel Component State
+- **Travel Type**: `travelType` (TravelType) - Local travel type state
+- **Start Point**: `startPoint` (Point) - Start point input state
+- **End Point**: `endPoint` (Point) - End point input state
+- **Road Type**: `selectedRoadType` (string) - Selected road type for viewing
+- **Blockage Form**: Form state for adding blockages
+
+#### BlockageList Component State
+- **Blockages**: `blockages` (Array) - List of blockages
+- **Loading**: `loading` (boolean) - Loading state
+- **Minimized**: `isMinimized` (boolean) - Minimize/expand state
 
 ### State Flow
 
@@ -377,6 +489,12 @@ State flows unidirectionally:
 - Form inputs are controlled by React state
 - State is the single source of truth
 - Changes flow through state updates
+
+### 5. Callback Pattern
+- Parent components pass callback functions to children
+- Children invoke callbacks to update parent state
+- Used for plan mode point selection synchronization
+- Enables bidirectional communication between App and ControlPanel
 
 ## Error Handling Strategy
 

@@ -14,8 +14,29 @@ export const routingAPI = {
    * @returns "wait" or "ready"
    */
   async checkReady(): Promise<'wait' | 'ready'> {
-    const response = await api.get<string>(`${ROUTING_API_BASE}/ready`);
-    return response.data as 'wait' | 'ready';
+    try {
+      const response = await api.get<string>(`${ROUTING_API_BASE}/ready`, {
+        timeout: 10000, // 10 second timeout for readiness check
+      });
+      // Handle both string and trimmed string responses, case-insensitive
+      const status = typeof response.data === 'string' 
+        ? response.data.trim().toLowerCase() 
+        : String(response.data).trim().toLowerCase();
+      
+      // Check for "ready" (case-insensitive) - server returns "Ready" with capital R
+      if (status === 'ready') {
+        return 'ready';
+      }
+      return 'wait';
+    } catch (error: any) {
+      console.error('Server readiness check failed:', error);
+      // If it's a network error or timeout, assume server is not ready yet
+      if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK' || !error.response) {
+        return 'wait';
+      }
+      // For other errors, throw to let the caller handle it
+      throw error;
+    }
   },
 
   /**
@@ -38,7 +59,8 @@ export const routingAPI = {
    * Get GeoJSON data for a specific road type
    */
   async getRoadTypeGeoJSON(roadType: string): Promise<GeoJSON> {
-    const response = await api.get<GeoJSON>(`${ROUTING_API_BASE}/axisType/${roadType}`);
+    const encodedRoadType = encodeURIComponent(roadType);
+    const response = await api.get<GeoJSON>(`${ROUTING_API_BASE}/axisType/${encodedRoadType}`);
     return response.data;
   },
 
@@ -65,8 +87,39 @@ export const routingAPI = {
    * Get all blockages from the server
    */
   async getBlockages(): Promise<GeoJSON> {
-    const response = await api.get<GeoJSON>(`${ROUTING_API_BASE}/blockage`);
-    return response.data;
+    try {
+      const response = await api.get<GeoJSON>(`${ROUTING_API_BASE}/blockage`);
+      const data = response.data;
+      
+      // Validate and normalize the response
+      if (data && typeof data === 'object') {
+        // If it's already a valid FeatureCollection, return it
+        if (data.type === 'FeatureCollection' && Array.isArray(data.features)) {
+          return data;
+        }
+        // If it's an empty object or invalid structure, return empty FeatureCollection
+        if (!data.type || !data.features) {
+          console.warn('Invalid GeoJSON structure from server, returning empty FeatureCollection');
+          return {
+            type: 'FeatureCollection',
+            features: [],
+          };
+        }
+      }
+      
+      // Fallback: return empty FeatureCollection
+      return {
+        type: 'FeatureCollection',
+        features: [],
+      };
+    } catch (error: any) {
+      console.error('Error fetching blockages:', error);
+      // Return empty FeatureCollection on error instead of throwing
+      return {
+        type: 'FeatureCollection',
+        features: [],
+      };
+    }
   },
 
   /**

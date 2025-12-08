@@ -64,15 +64,20 @@ This document contains user stories that describe the functionalities of the SG 
 1. The control panel provides input fields for start point (longitude, latitude, description)
 2. The control panel provides input fields for end point (longitude, latitude, description)
 3. Default values are pre-filled for start and end points (Bedok 85 and Choa Chu Kang Road)
-4. A "Calculate Route" button is available
-5. When the button is clicked, the application sends a route request to the backend
-6. The route is displayed on the map as a blue line
-7. Start point is marked with a green marker on the map
-8. End point is marked with a red marker on the map
-9. The map automatically zooms to fit the route
-10. If route calculation fails, an error message is displayed
-11. The route calculation respects the currently selected travel type
-12. The "Calculate Route" button is disabled when the server is not ready or during loading
+4. A "Plan Mode" feature allows users to click on the map to set start and end points
+5. When entering plan mode, users are prompted to click on the map for the start point first
+6. After selecting the start point, users are prompted to click on the map for the end point
+7. After selecting both points in plan mode, the route is automatically calculated
+8. A "Calculate Route" button is available for manual route calculation
+9. When the button is clicked, the application sends a route request to the backend
+10. The route is displayed on the map as a blue line
+11. Start point is marked with a green marker on the map
+12. End point is marked with a red marker on the map
+13. The map automatically zooms to fit the route
+14. If route calculation fails, an error message is displayed
+15. The route calculation respects the currently selected travel type
+16. The "Calculate Route" button is enabled when valid start and end points are set
+17. Points selected via plan mode persist in the input fields after route calculation
 
 ---
 
@@ -205,14 +210,20 @@ This document contains user stories that describe the functionalities of the SG 
 ### Acceptance Criteria
 
 1. The control panel is clearly organized with sections for different features
-2. Input fields have appropriate labels and placeholders
-3. Buttons have clear, descriptive text
-4. The UI provides visual feedback for user actions (hover states, active states)
-5. Loading states are indicated with disabled buttons or loading indicators
-6. The layout is clean and not cluttered
-7. Colors are used consistently (blue for primary actions, red for blockages, etc.)
-8. The interface is responsive and works on different screen sizes
-9. The map and control panel are properly sized and do not overlap incorrectly
+2. The control panel has a modern gradient header with the application title
+3. The control panel can be collapsed to the left, showing only a floating expand button
+4. When collapsed, the map expands to fill the entire screen with no borders or gaps
+5. A floating expand button (▶) appears in the top-left when the panel is collapsed
+6. Input fields have appropriate labels and placeholders
+7. Buttons have clear, descriptive text with modern gradient styling
+8. The UI provides visual feedback for user actions (hover states, active states, smooth animations)
+9. Loading states are indicated with disabled buttons or loading indicators
+10. The layout uses modern card-based design with shadows and rounded corners
+11. Colors use a consistent purple gradient theme (#667eea to #764ba2)
+12. The interface is responsive and works on different screen sizes
+13. The map and control panel are properly sized and do not overlap incorrectly
+14. Smooth transitions and animations enhance the user experience
+15. Custom scrollbars with gradient styling match the theme
 
 ---
 
@@ -248,18 +259,42 @@ This document contains user stories that describe the functionalities of the SG 
 
 ---
 
+## User Story 13: Plan Mode for Route Selection
+
+**As a** user  
+**I want to** select start and end points by clicking on the map  
+**So that** I can quickly plan routes without manually entering coordinates
+
+### Acceptance Criteria
+
+1. A "Plan Mode" button is available in the Route Planning section
+2. Clicking "Enter Plan Mode" activates plan mode and shows instructions
+3. When in plan mode, the button text changes to indicate the current step
+4. Users are first prompted to click on the map for the START point
+5. After clicking for start point, users are prompted to click for the END point
+6. The selected coordinates are automatically filled into the input fields
+7. After selecting both points, the route is automatically calculated
+8. Plan mode can be cancelled by clicking the button again
+9. Visual feedback (hints) guides users through the process
+10. The selected points persist after route calculation
+
 ## Summary
 
 The application provides the following core functionalities:
 
-1. ✅ Server status monitoring
+1. ✅ Server status monitoring with automatic updates
 2. ✅ Travel type selection with automatic road type configuration
-3. ✅ Route calculation and visualization
-4. ✅ Road type visualization
-5. ✅ Blockage management (view, add, delete)
-6. ✅ Interactive map with OpenStreetMap
-7. ✅ Error handling and user feedback
-8. ✅ Responsive and intuitive UI
+3. ✅ Route calculation and visualization with plan mode
+4. ✅ Interactive map-based point selection (plan mode)
+5. ✅ Automatic route calculation after selecting both points
+6. ✅ Road type visualization with improved visibility
+7. ✅ Blockage management (view, add, delete) with minimize feature
+8. ✅ Interactive map with OpenStreetMap and auto-resize
+9. ✅ Collapsible control panel for more map space
+10. ✅ Minimizable blockage list
+11. ✅ Error handling and user feedback
+12. ✅ Modern, responsive UI with gradient theme
+13. ✅ Smooth animations and transitions
 
 All user stories are implemented with their respective acceptance criteria met.
 

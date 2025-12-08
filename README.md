@@ -4,12 +4,16 @@ A web-based routing application for Singapore roads using OpenStreetMap data. Th
 
 ## Features
 
-- 🗺️ Interactive map using OpenStreetMap tiles
+- 🗺️ Interactive map using OpenStreetMap tiles with auto-resize
 - 🚗 Multiple travel types (Car, Bicycle, Walk) with automatic road type filtering
 - 🧭 Route calculation and visualization between two points
-- 🚧 Blockage management (view, add, delete)
-- 🛣️ Road type visualization
+- 📍 Plan Mode: Click on map to set start and end points (automatic route calculation)
+- 🚧 Blockage management (view, add, delete) with minimize feature
+- 🛣️ Road type visualization with improved styling
 - 📊 Real-time server status monitoring
+- 🎨 Modern UI with gradient theme and smooth animations
+- 📱 Collapsible side panel for more map space
+- 🔄 Automatic map resizing when panel collapses
 
 ## Technology Stack
 
@@ -92,9 +96,18 @@ SG_Routing_UI_LinYuanXun/
 
 ### Calculate a Route
 
+**Method 1: Plan Mode (Recommended)**
 1. Ensure the server status shows "✓ Ready"
 2. Select a travel type (Car, Bicycle, or Walk)
-3. Enter start and end point coordinates (or use defaults)
+3. Click "📍 Enter Plan Mode" button
+4. Click anywhere on the map to set the START point
+5. Click anywhere on the map to set the END point
+6. The route is automatically calculated and displayed
+
+**Method 2: Manual Entry**
+1. Ensure the server status shows "✓ Ready"
+2. Select a travel type (Car, Bicycle, or Walk)
+3. Enter start and end point coordinates in the input fields (or use defaults)
 4. Click "Calculate Route"
 5. The route will be displayed on the map as a blue line
 
@@ -116,6 +129,17 @@ SG_Routing_UI_LinYuanXun/
 2. Click the × button next to the blockage
 3. Confirm deletion
 4. The blockage will be removed from the map and list
+
+**Minimize Blockage List:**
+1. Click the ▼ button in the blockage list header to minimize
+2. Click the ▲ button to expand the list again
+
+### Collapse Control Panel
+
+1. Click the ◀ button in the control panel header to collapse
+2. The panel collapses to the left, giving more space for the map
+3. Click the ▶ button (floating in top-left) to expand the panel again
+4. The map automatically resizes to fill the available space
 
 ## API Endpoints
 
