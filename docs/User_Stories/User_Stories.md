@@ -62,20 +62,25 @@ This document contains user stories that describe the functionalities of the SG 
 1. The control panel provides input fields for start point (longitude, latitude, description)
 2. The control panel provides input fields for end point (longitude, latitude, description)
 3. Default values are pre-filled for start and end points (Bedok 85 and Choa Chu Kang Road)
-4. A "Plan Mode" feature allows users to click on the map to set start and end points
-5. When entering plan mode, users are prompted to click on the map for the start point first
-6. After selecting the start point, users are prompted to click on the map for the end point
-7. After selecting both points in plan mode, the route is automatically calculated
-8. A "Calculate Route" button is available for manual route calculation
-9. When the button is clicked, the application sends a route request to the backend
-10. The route is displayed on the map as a blue line
-11. Start point is marked with a green marker on the map
-12. End point is marked with a red marker on the map
-13. The map automatically zooms to fit the route
-14. If route calculation fails, an error message is displayed
-15. The route calculation respects the currently selected travel type
-16. The "Calculate Route" button is enabled when valid start and end points are set
-17. Points selected via plan mode persist in the input fields after route calculation
+4. A location search field is available for both start and end points using OpenStreetMap geocoding
+5. Users can search for locations by name (e.g., "Marina Bay", "Orchard Road", "Changi Airport")
+6. Search results appear in a dropdown with full address and location type
+7. Selecting a search result automatically fills coordinates and description
+8. Manual coordinate entry is still available below the search field
+9. A "Plan Mode" feature allows users to click on the map to set start and end points
+10. When entering plan mode, users are prompted to click on the map for the start point first
+11. After selecting the start point, users are prompted to click on the map for the end point
+12. After selecting both points in plan mode, the route is automatically calculated
+13. A "Calculate Route" button is available for manual route calculation
+14. When the button is clicked, the application sends a route request to the backend
+15. The route is displayed on the map as a blue line
+16. Start point is marked with a green marker on the map
+17. End point is marked with a red marker on the map
+18. The map automatically zooms to fit the route
+19. If route calculation fails, an error message is displayed
+20. The route calculation respects the currently selected travel type
+21. The "Calculate Route" button is enabled when valid start and end points are set
+22. Points selected via plan mode or search persist in the input fields after route calculation
 
 ---
 
@@ -130,24 +135,28 @@ This document contains user stories that describe the functionalities of the SG 
 
 ### Acceptance Criteria
 
-1. A "📍 Choose Location on Map" button is available in the Blockage Management section
-2. Clicking the button activates location selection mode
-3. A yellow prompt appears: "📍 Click on the map to choose blockage location"
-4. Users click anywhere on the map to select the blockage location
-5. After selecting location, a green confirmation shows the selected coordinates
-6. Input fields appear for:
-   - Blockage name (required)
-   - Description (optional)
-   - Radius in meters (default: 200)
-7. An "Add Blockage" button becomes available after location is selected
-8. The button is disabled if the blockage name is empty or the server is not ready
-9. When the button is clicked, the blockage is sent to the backend
-10. Upon successful addition, a success message is displayed
-11. The blockage list is automatically refreshed to show the new blockage
-12. The new blockage appears on the map immediately with an orange marker
-13. If addition fails, an error message is displayed
-14. Input fields are cleared after successful addition
-15. Location selection can be cancelled by clicking the button again
+1. A location search field is available in the Blockage Management section
+2. Users can search for blockage locations by name using OpenStreetMap geocoding
+3. Search results appear in a dropdown with full address and location type
+4. Selecting a search result automatically sets the blockage location coordinates
+5. A "📍 Choose Location on Map" button is available as an alternative to search
+6. Clicking the button activates location selection mode
+7. A yellow prompt appears: "📍 Click on the map to choose blockage location"
+8. Users click anywhere on the map to select the blockage location
+9. After selecting location (via search or map click), a green confirmation shows the selected coordinates
+10. Input fields appear for:
+    - Blockage name (required)
+    - Description (optional)
+    - Radius in meters (default: 200)
+11. An "Add Blockage" button becomes available after location is selected
+12. The button is disabled if the blockage name is empty or the server is not ready
+13. When the button is clicked, the blockage is sent to the backend
+14. Upon successful addition, a success message is displayed
+15. The blockage list is automatically refreshed to show the new blockage
+16. The new blockage appears on the map immediately with an orange marker
+17. If addition fails, an error message is displayed
+18. Input fields are cleared after successful addition
+19. Location selection can be cancelled by clicking the button again
 
 ---
 
@@ -227,6 +236,31 @@ This document contains user stories that describe the functionalities of the SG 
 7. Clear buttons have consistent styling with gradient theme and hover effects
 8. The map remains functional after clearing visualizations
 
+---
+
+## User Story 11: Search Locations by Name
+
+**As a** user  
+**I want to** search for locations by name when planning routes or adding blockages  
+**So that** I can quickly find and select locations without manually entering coordinates
+
+### Acceptance Criteria
+
+1. A location search field is available for start point, end point, and blockage location
+2. Users can type location names (e.g., "Marina Bay", "Orchard Road", "Changi Airport")
+3. Search uses OpenStreetMap geocoding service (Nominatim) restricted to Singapore
+4. Search results appear in a dropdown list after typing at least 2 characters
+5. Each search result displays the full address and location type
+6. Users can navigate results using keyboard arrow keys
+7. Selecting a result (click or Enter key) automatically fills coordinates and description
+8. Search is debounced to avoid excessive API calls (300ms delay)
+9. A loading indicator appears while searching
+10. Manual coordinate entry remains available below the search field
+11. Search respects rate limits (1 request per second) to comply with service policies
+12. If no results are found, a "No locations found" message is displayed
+13. The dropdown closes when clicking outside or pressing Escape
+14. Selected location description is saved and displayed
+
 ## Summary
 
 The application provides the following core functionalities:
@@ -234,14 +268,15 @@ The application provides the following core functionalities:
 1. ✅ Server status monitoring with automatic updates and manual check button
 2. ✅ Travel type selection with automatic road type configuration
 3. ✅ Route calculation and visualization with plan mode
-4. ✅ Interactive map-based point selection (plan mode)
-5. ✅ Automatic route calculation after selecting both points
-6. ✅ Clear route button to remove route visualization
-7. ✅ Road type visualization with improved visibility and auto-zoom
-8. ✅ Clear road types button to remove highlighted roads
-9. ✅ Blockage management (view, add, delete) with minimize feature
-10. ✅ Map-click location selection for blockages
-11. ✅ View active road types for selected travel mode
+4. ✅ Location search by name for start/end points and blockages (OpenStreetMap geocoding)
+5. ✅ Interactive map-based point selection (plan mode)
+6. ✅ Automatic route calculation after selecting both points
+7. ✅ Clear route button to remove route visualization
+8. ✅ Road type visualization with improved visibility and auto-zoom
+9. ✅ Clear road types button to remove highlighted roads
+10. ✅ Blockage management (view, add, delete) with minimize feature
+11. ✅ Map-click and search-based location selection for blockages
+12. ✅ View active road types for selected travel mode
 
 All user stories are implemented with their respective acceptance criteria met.
 

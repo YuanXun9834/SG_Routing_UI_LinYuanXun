@@ -163,22 +163,37 @@ This document describes the test procedures for validating that all user stories
    - Verify plan mode exits automatically (button returns to "📍 Enter Plan Mode")
    - Verify the selected coordinates remain in the input fields after route calculation
 
-2. **Test Manual Entry Method**
-   - Locate the input fields for start and end points
-   - Verify start point fields: Longitude, Latitude, Description
-   - Verify end point fields: Longitude, Latitude, Description
+2. **Test Location Search**
+   - Locate the location search field for start point
+   - Type "Marina Bay" in the search field
+   - Verify search results appear in a dropdown after a brief delay
+   - Verify results show full addresses and location types
+   - Select a result from the dropdown
+   - Verify coordinates and description are automatically filled
+   - Verify the map may update to show the selected location
+   - Repeat for end point search (e.g., type "Orchard Road")
+   - Verify both start and end points can be set via search
+   - Test keyboard navigation (arrow keys, Enter, Escape)
+   - Verify search is restricted to Singapore locations
+
+3. **Test Manual Entry Method**
+   - Locate the coordinate input fields below the search fields
+   - Verify start point fields: Longitude, Latitude
+   - Verify end point fields: Longitude, Latitude
    - Check that default values are pre-filled (Bedok 85 and Choa Chu Kang Road)
+   - Manually enter coordinates for start point (e.g., 103.8500, 1.3000)
+   - Manually enter coordinates for end point (e.g., 103.8000, 1.3500)
    - Ensure server status is "Ready"
    - Click "Calculate Route" button
    - Wait for the route to be calculated
 
-3. **Verify route display**
+4. **Verify route display**
    - Check that a blue line appears on the map representing the route
    - Verify a green marker appears at the start point
    - Verify a red marker appears at the end point
    - Check that the map automatically zooms to fit the route
 
-4. **Test with custom coordinates**
+5. **Test with custom coordinates**
    - Enter new coordinates for start point (e.g., 103.8500, 1.3000)
    - Enter new coordinates for end point (e.g., 103.8000, 1.3500)
    - Click "Calculate Route"
@@ -190,14 +205,14 @@ This document describes the test procedures for validating that all user stories
    - Verify an error message is displayed
    - Verify the application does not crash
 
-6. **Test clear route button**
+7. **Test clear route button**
    - After calculating a route, verify a "✕ Clear Route" button appears at the top-right
    - Click the clear route button
    - Verify the route line is removed from the map
    - Verify start and end markers are removed
    - Verify the button disappears after clearing
 
-7. **Test with different travel types**
+8. **Test with different travel types**
    - Select "Bicycle" travel type
    - Use plan mode to calculate a route
    - Verify the route may differ from the car route
@@ -209,6 +224,10 @@ This document describes the test procedures for validating that all user stories
 
 - ✅ Plan mode button is present and functional
 - ✅ Plan mode guides users through selecting start and end points
+- ✅ Location search fields are available for start and end points
+- ✅ Search results appear in dropdown with addresses and types
+- ✅ Selecting search results automatically fills coordinates and description
+- ✅ Keyboard navigation works (arrow keys, Enter, Escape)
 - ✅ Coordinates are automatically filled when clicking on the map
 - ✅ Route is automatically calculated after selecting both points
 - ✅ Clear route button appears when route is displayed
@@ -219,7 +238,7 @@ This document describes the test procedures for validating that all user stories
 - ✅ Start point marked with green marker
 - ✅ End point marked with red marker
 - ✅ Map auto-zooms to fit route
-- ✅ Route calculation works with custom coordinates
+- ✅ Route calculation works with custom coordinates and search results
 - ✅ Selected points persist after route calculation (do not reset to defaults)
 - ✅ Error messages are displayed for invalid inputs
 - ✅ Route differs based on travel type selection
@@ -398,6 +417,10 @@ This document describes the test procedures for validating that all user stories
 
 ### Expected Results
 
+- ✅ Location search field is present and functional
+- ✅ Search results appear in dropdown with addresses and types
+- ✅ Selecting search results automatically sets blockage location
+- ✅ Map-click location selection works as alternative
 - ✅ All input fields are present and functional
 - ✅ Blockage is successfully added with valid data
 - ✅ Success message is displayed
@@ -452,7 +475,7 @@ This document describes the test procedures for validating that all user stories
    - Verify the blockage count updates
    - Verify no error messages appear if deletion succeeds (even with network issues)
 
-6. **Test error handling**
+7. **Test error handling**
    - Try to delete a blockage that doesn't exist (if possible)
    - Verify appropriate error messages are displayed for real failures
    - Verify the application handles network errors gracefully
@@ -485,10 +508,10 @@ This document describes the test procedures for validating that all user stories
 
 1. Server Readiness Check (with manual check button)
 2. Travel Type Selection
-3. Route Calculation (with plan mode and clear button)
+3. Route Calculation (with plan mode, location search, and clear button)
 4. View Road Types (with clear button)
 5. View Blockages (with minimize feature)
-6. Add Blockage (with map-click location selection)
+6. Add Blockage (with location search and map-click selection)
 7. Delete Blockage
 
 ---

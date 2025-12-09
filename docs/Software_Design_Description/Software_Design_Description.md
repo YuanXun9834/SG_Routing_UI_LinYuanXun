@@ -113,6 +113,17 @@ App (Root Component)
   - Update when blockages change
   - Display blockage count in header
 
+#### LocationSearch Component
+- **Purpose**: Provide location search functionality using geocoding
+- **Responsibilities**:
+  - Display search input field with autocomplete dropdown
+  - Handle user input with debouncing (300ms)
+  - Call geocoding service to search for locations
+  - Display search results in dropdown
+  - Support keyboard navigation (arrow keys, Enter, Escape)
+  - Update parent component when location is selected
+  - Handle click-outside to close dropdown
+
 ### Service Layer
 
 #### API Service (`src/services/api.ts`)
@@ -122,6 +133,16 @@ App (Root Component)
   - Handle HTTP requests and responses
   - Manage error handling at the API level
   - Transform data as needed
+
+#### Geocoding Service (`src/services/geocoding.ts`)
+- **Purpose**: Provide location search using OpenStreetMap Nominatim API
+- **Responsibilities**:
+  - Search for locations by name
+  - Restrict searches to Singapore (countrycodes: 'sg')
+  - Implement rate limiting (1 request per second)
+  - Return up to 5 search results
+  - Convert geocoding results to Point objects
+  - Handle errors gracefully
 
 ## Data Flow
 
@@ -167,9 +188,50 @@ Leaflet GeoJSON Layer
 Map Display
 ```
 
-**Method 2: Manual Entry**
+**Method 2: Location Search**
 ```
-User Input (Start/End Points in input fields)
+User types location name in search field
+    ↓
+LocationSearch Component (debounced input)
+    ↓
+Geocoding Service (searchLocation)
+    ↓
+Nominatim API (OpenStreetMap)
+    ↓
+Search Results (array of locations)
+    ↓
+LocationSearch Component (display dropdown)
+    ↓
+User selects a result
+    ↓
+LocationSearch Component (onChange callback)
+    ↓
+ControlPanel Component (update startPoint/endPoint)
+    ↓
+Coordinates and description automatically filled
+    ↓
+User clicks "Calculate Route"
+    ↓
+App Component (handleRouteCalculate)
+    ↓
+API Service (routingAPI.getRoute)
+    ↓
+Backend API (POST /route)
+    ↓
+GeoJSON Response
+    ↓
+App Component (setRouteGeoJSON)
+    ↓
+Map Component (MapUpdater)
+    ↓
+Leaflet GeoJSON Layer
+    ↓
+Map Display
+```
+
+**Method 3: Manual Entry**
+```
+User Input (Start/End Points in coordinate input fields)
     ↓
 ControlPanel Component
     ↓

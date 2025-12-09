@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import type { TravelType, Point, Blockage } from '../types';
 import { ROAD_TYPE_CONFIG } from '../config/roadTypes';
 import { routingAPI } from '../services/api';
+import LocationSearch from './LocationSearch';
 import './ControlPanel.css';
 
 type PlanMode = 'idle' | 'selecting_start' | 'selecting_end';
@@ -319,61 +320,91 @@ export default function ControlPanel({
         </div>
         <div className="input-group">
           <label>Start Point</label>
-          <input
-            type="number"
-            placeholder="Longitude"
-            value={startPoint.long}
-            onChange={(e) =>
-              setStartPoint({ ...startPoint, long: parseFloat(e.target.value) })
-            }
-            step="0.000001"
+          <LocationSearch
+            value={startPoint}
+            onChange={(point) => {
+              setStartPoint(point);
+              if (onStartPointUpdate) {
+                onStartPointUpdate(point);
+              }
+            }}
+            placeholder="Search for start location..."
+            disabled={loading}
           />
-          <input
-            type="number"
-            placeholder="Latitude"
-            value={startPoint.lat}
-            onChange={(e) =>
-              setStartPoint({ ...startPoint, lat: parseFloat(e.target.value) })
-            }
-            step="0.000001"
-          />
-          <input
-            type="text"
-            placeholder="Description (optional)"
-            value={startPoint.description || ''}
-            onChange={(e) =>
-              setStartPoint({ ...startPoint, description: e.target.value })
-            }
-          />
+          <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+            <input
+              type="number"
+              placeholder="Longitude"
+              value={startPoint.long}
+              onChange={(e) => {
+                const newPoint = { ...startPoint, long: parseFloat(e.target.value) || 0 };
+                setStartPoint(newPoint);
+                if (onStartPointUpdate) {
+                  onStartPointUpdate(newPoint);
+                }
+              }}
+              step="0.000001"
+              style={{ flex: 1 }}
+            />
+            <input
+              type="number"
+              placeholder="Latitude"
+              value={startPoint.lat}
+              onChange={(e) => {
+                const newPoint = { ...startPoint, lat: parseFloat(e.target.value) || 0 };
+                setStartPoint(newPoint);
+                if (onStartPointUpdate) {
+                  onStartPointUpdate(newPoint);
+                }
+              }}
+              step="0.000001"
+              style={{ flex: 1 }}
+            />
+          </div>
         </div>
         <div className="input-group">
           <label>End Point</label>
-          <input
-            type="number"
-            placeholder="Longitude"
-            value={endPoint.long}
-            onChange={(e) =>
-              setEndPoint({ ...endPoint, long: parseFloat(e.target.value) })
-            }
-            step="0.000001"
+          <LocationSearch
+            value={endPoint}
+            onChange={(point) => {
+              setEndPoint(point);
+              if (onEndPointUpdate) {
+                onEndPointUpdate(point);
+              }
+            }}
+            placeholder="Search for end location..."
+            disabled={loading}
           />
-          <input
-            type="number"
-            placeholder="Latitude"
-            value={endPoint.lat}
-            onChange={(e) =>
-              setEndPoint({ ...endPoint, lat: parseFloat(e.target.value) })
-            }
-            step="0.000001"
-          />
-          <input
-            type="text"
-            placeholder="Description (optional)"
-            value={endPoint.description || ''}
-            onChange={(e) =>
-              setEndPoint({ ...endPoint, description: e.target.value })
-            }
-          />
+          <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+            <input
+              type="number"
+              placeholder="Longitude"
+              value={endPoint.long}
+              onChange={(e) => {
+                const newPoint = { ...endPoint, long: parseFloat(e.target.value) || 0 };
+                setEndPoint(newPoint);
+                if (onEndPointUpdate) {
+                  onEndPointUpdate(newPoint);
+                }
+              }}
+              step="0.000001"
+              style={{ flex: 1 }}
+            />
+            <input
+              type="number"
+              placeholder="Latitude"
+              value={endPoint.lat}
+              onChange={(e) => {
+                const newPoint = { ...endPoint, lat: parseFloat(e.target.value) || 0 };
+                setEndPoint(newPoint);
+                if (onEndPointUpdate) {
+                  onEndPointUpdate(newPoint);
+                }
+              }}
+              step="0.000001"
+              style={{ flex: 1 }}
+            />
+          </div>
         </div>
         <button
           className="primary-button"
@@ -433,6 +464,18 @@ export default function ControlPanel({
             ✓ Location selected: {blockageLocation.lat.toFixed(6)}, {blockageLocation.long.toFixed(6)}
           </div>
         )}
+        <div style={{ marginBottom: '15px' }}>
+          <LocationSearch
+            value={blockageLocation || { long: 0, lat: 0 }}
+            onChange={(point) => {
+              if (onBlockageLocationSet) {
+                onBlockageLocationSet(point);
+              }
+            }}
+            placeholder="Search for blockage location..."
+            disabled={loading || blockageMode === 'selecting_location'}
+          />
+        </div>
         <button
           className={`secondary-button ${blockageMode === 'selecting_location' ? 'active' : ''}`}
           onClick={handleChooseBlockageLocation}
